@@ -50,7 +50,7 @@ VALUES ('Ouro', 'Acesso total: IA + especialistas', 1, 1);
 ------------------------------------------------------------
 CREATE TABLE challenges (
     id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    title VARCHAR2(100) NOT NULL,
+    name VARCHAR2(100) NOT NULL,
     description VARCHAR2(200)
 );
 
@@ -97,3 +97,9 @@ END;
 INSERT INTO challenges (title, description) VALUES ('Desafio Matemática', 'Resolver cálculos');
 INSERT INTO challenges (title, description) VALUES ('Desafio Lógica', 'Quebra-cabeças de lógica');
 INSERT INTO challenges (title, description) VALUES ('Desafio Palavras', 'Montar palavras');
+
+------------------------------------------------------------
+-- USUÁRIO ADMIN (SEED)
+------------------------------------------------------------
+INSERT INTO users (name, email, cpf, password_hash, role, plan_id)
+VALUES ('Administrador', 'admin@skillup.com', '00000000000', 'admin123', 'admin', 3);
