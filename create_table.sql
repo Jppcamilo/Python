@@ -22,6 +22,7 @@ CREATE TABLE plans (
     id NUMBER PRIMARY KEY,
     name VARCHAR2(50) NOT NULL,
     description VARCHAR2(200),
+    price NUMBER(5, 2) DEFAULT 0.00, 
     has_ai_chat NUMBER(1) DEFAULT 0,
     has_specialist_chat NUMBER(1) DEFAULT 0
 );
@@ -36,14 +37,14 @@ BEGIN
 END;
 /
 
-INSERT INTO plans (name, description, has_ai_chat, has_specialist_chat)
-VALUES ('Bronze', 'Acesso básico', 0, 0);
+INSERT INTO plans (name, description, price, has_ai_chat, has_specialist_chat)
+VALUES ('Bronze', 'Acesso básico', 0.00, 0, 0);
 
-INSERT INTO plans (name, description, has_ai_chat, has_specialist_chat)
-VALUES ('Prata', 'Acesso ao chat IA', 1, 0);
+INSERT INTO plans (name, description, price, has_ai_chat, has_specialist_chat)
+VALUES ('Prata', 'Acesso ao chat IA', 19.90, 1, 0);
 
-INSERT INTO plans (name, description, has_ai_chat, has_specialist_chat)
-VALUES ('Ouro', 'Acesso total: IA + especialistas', 1, 1);
+INSERT INTO plans (name, description, price, has_ai_chat, has_specialist_chat)
+VALUES ('Ouro', 'Acesso total: IA + especialistas', 39.90, 1, 1);
 
 ------------------------------------------------------------
 -- CHALLENGES
