@@ -83,20 +83,18 @@ CREATE TABLE progress (
 
 CREATE SEQUENCE progress_seq START WITH 1 INCREMENT BY 1;
 
-CREATE OR REPLACE TRIGGER progress_bi
-BEFORE INSERT ON progress
-FOR EACH ROW
-BEGIN
-    :new.id := progress_seq.nextval;
-END;
-/
 
 ------------------------------------------------------------
 -- DESAFIOS BASE
 ------------------------------------------------------------
-INSERT INTO challenges (title, description) VALUES ('Desafio Matemática', 'Resolver cálculos');
-INSERT INTO challenges (title, description) VALUES ('Desafio Lógica', 'Quebra-cabeças de lógica');
-INSERT INTO challenges (title, description) VALUES ('Desafio Palavras', 'Montar palavras');
+INSERT INTO challenges (name, description)
+VALUES ('Quiz de Soft Skills', 'Responda perguntas sobre habilidades comportamentais');
+
+INSERT INTO challenges (name, description)
+VALUES ('Jogo de Adivinhação', 'Adivinhe o número secreto');
+
+INSERT INTO challenges (name, description)
+VALUES ('Desafio de Digitação', 'Digite a frase corretamente');
 
 ------------------------------------------------------------
 -- USUÁRIO ADMIN (SEED)
