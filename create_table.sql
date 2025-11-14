@@ -12,10 +12,6 @@ BEGIN EXECUTE IMMEDIATE 'DROP TABLE plans CASCADE CONSTRAINTS'; EXCEPTION WHEN O
 
 BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE progress_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
-BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE challenges_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE users_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
 BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE plans_seq'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
 
@@ -25,7 +21,9 @@ BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE plans_seq'; EXCEPTION WHEN OTHERS THEN NU
 CREATE TABLE plans (
     id NUMBER PRIMARY KEY,
     name VARCHAR2(50) NOT NULL,
-    description VARCHAR2(200)
+    description VARCHAR2(200),
+    has_ai_chat NUMBER(1) DEFAULT 0,
+    has_specialist_chat NUMBER(1) DEFAULT 0
 );
 
 CREATE SEQUENCE plans_seq START WITH 1 INCREMENT BY 1;
@@ -38,52 +36,37 @@ BEGIN
 END;
 /
 
-INSERT INTO plans (name, description) VALUES ('Bronze', 'Acesso básico sem funcionalidades extras');
-INSERT INTO plans (name, description) VALUES ('Prata',  'Acesso ao chat de IA para dúvidas');
-INSERT INTO plans (name, description) VALUES ('Ouro',   'Chat IA + chat com especialista');
+INSERT INTO plans (name, description, has_ai_chat, has_specialist_chat)
+VALUES ('Bronze', 'Acesso básico', 0, 0);
 
-------------------------------------------------------------
--- USERS
-------------------------------------------------------------
-CREATE TABLE users (
-    id NUMBER PRIMARY KEY,
-    name VARCHAR2(100) NOT NULL,
-    email VARCHAR2(100) UNIQUE NOT NULL,
-    cpf VARCHAR2(20) UNIQUE NOT NULL,
-    password_hash VARCHAR2(100) NOT NULL,
-    role VARCHAR2(20) DEFAULT 'user',
-    plan_id NUMBER DEFAULT 1,
-    CONSTRAINT fk_user_plan FOREIGN KEY (plan_id) REFERENCES plans(id)
-);
+INSERT INTO plans (name, description, has_ai_chat, has_specialist_chat)
+VALUES ('Prata', 'Acesso ao chat IA', 1, 0);
 
-CREATE SEQUENCE users_seq START WITH 1 INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER users_bi
-BEFORE INSERT ON users
-FOR EACH ROW
-BEGIN
-    :new.id := users_seq.nextval;
-END;
-/
+INSERT INTO plans (name, description, has_ai_chat, has_specialist_chat)
+VALUES ('Ouro', 'Acesso total: IA + especialistas', 1, 1);
 
 ------------------------------------------------------------
 -- CHALLENGES
 ------------------------------------------------------------
 CREATE TABLE challenges (
-    id NUMBER PRIMARY KEY,
-    name VARCHAR2(100) NOT NULL,
+    id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    title VARCHAR2(100) NOT NULL,
     description VARCHAR2(200)
 );
 
-CREATE SEQUENCE challenges_seq START WITH 1 INCREMENT BY 1;
-
-CREATE OR REPLACE TRIGGER challenges_bi
-BEFORE INSERT ON challenges
-FOR EACH ROW
-BEGIN
-    :new.id := challenges_seq.nextval;
-END;
-/
+------------------------------------------------------------
+-- USERS
+------------------------------------------------------------
+CREATE TABLE users (
+    id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR2(100) NOT NULL,
+    email VARCHAR2(100) NOT NULL UNIQUE,
+    cpf VARCHAR2(20) UNIQUE NOT NULL,
+    password_hash VARCHAR2(200) NOT NULL,
+    role VARCHAR2(20) DEFAULT 'user',
+    plan_id NUMBER REFERENCES plans(id),
+    selected_challenge_id NUMBER REFERENCES challenges(id)
+);
 
 ------------------------------------------------------------
 -- PROGRESS
@@ -109,8 +92,8 @@ END;
 /
 
 ------------------------------------------------------------
--- CHALLENGES BASE (opcional)
+-- DESAFIOS BASE
 ------------------------------------------------------------
-INSERT INTO challenges (name, description) VALUES ('Desafio Matemática', 'Resolver cálculos');
-INSERT INTO challenges (name, description) VALUES ('Desafio Lógica', 'Quebra-cabeças de lógica');
-INSERT INTO challenges (name, description) VALUES ('Desafio Palavras', 'Montar palavras');
+INSERT INTO challenges (title, description) VALUES ('Desafio Matemática', 'Resolver cálculos');
+INSERT INTO challenges (title, description) VALUES ('Desafio Lógica', 'Quebra-cabeças de lógica');
+INSERT INTO challenges (title, description) VALUES ('Desafio Palavras', 'Montar palavras');
