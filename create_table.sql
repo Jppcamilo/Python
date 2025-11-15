@@ -101,4 +101,5 @@ VALUES ('Desafio de Digitação', 'Digite a frase corretamente');
 -- USUÁRIO ADMIN (SEED)
 ------------------------------------------------------------
 INSERT INTO users (name, email, cpf, password_hash, role, plan_id)
-VALUES ('Administrador', 'admin@skillup.com', '00000000000', 'admin123', 'admin', 3);
+VALUES ('Administrador', 'admin@skillup.com', '00000000000', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'admin', 3);
+COMMIT;
