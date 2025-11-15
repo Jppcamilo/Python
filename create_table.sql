@@ -1,5 +1,5 @@
 ------------------------------------------------------------
--- DROPS (executar sem medo caso as tabelas já existam)
+-- DROPS
 ------------------------------------------------------------
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE progress CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
