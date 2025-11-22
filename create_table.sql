@@ -35,7 +35,7 @@ END;
 /
 
 --------------------------------------------------------
--- 2. CRIAÇÃO DAS TABELAS (DDL) - CORRIGIDO
+-- 2. CRIAÇÃO DAS TABELAS (DDL)
 --------------------------------------------------------
 
 -- USUARIO
@@ -83,7 +83,7 @@ ALTER TABLE CHALLENGE ADD CONSTRAINT PK_CHALLENGE PRIMARY KEY (ID_CHALLENGE);
 ALTER TABLE CHALLENGE ADD CONSTRAINT FK_CHALLENGE_USUARIO FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO (ID_USUARIO);
 ALTER TABLE CHALLENGE ADD CONSTRAINT FK_CHALLENGE_CURSO FOREIGN KEY (ID_CURSO) REFERENCES CURSO (ID_CURSO);
 
--- CONVERSA (CORRIGIDO: VARCHAR2(10000) -> CLOB)
+-- CONVERSA (USANDO CLOB PARA TEXTOS LONGOS)
 CREATE TABLE CONVERSA (
     ID_CONVERSA VARCHAR2(100) NOT NULL,
     ID_USUARIO NUMBER NOT NULL,
@@ -121,21 +121,18 @@ ALTER TABLE NIVEL_USUARIO ADD CONSTRAINT FK_NIVEL_USUARIO_USUARIO FOREIGN KEY (I
 ALTER TABLE NIVEL_USUARIO ADD CONSTRAINT FK_NIVEL_USUARIO_NIVEL FOREIGN KEY (ID_NIVEL) REFERENCES NIVEL (ID_NIVEL);
 
 --------------------------------------------------------
--- 3. INSERÇÃO DE DADOS (DML) - CORRIGIDO
+-- 3. INSERÇÃO DE DADOS (DML) - SOFT SKILLS
 --------------------------------------------------------
--- 1. Inserir o Usuário Admin (ID 99 para não misturar com os outros)
+
+-- 1. USUÁRIO ADMIN (Login: admin@levelup.com / Senha: admin123)
 INSERT INTO USUARIO (ID_USUARIO, NOME_USUARIO, EMAIL_USUARIO, SENHA_USUARIO, PLANO_USUARIO)
 VALUES (99, 'Administrador', 'admin@levelup.com', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'OURO');
 
--- 2. (Opcional) Definir o nível dele como Especialista para ficar bonito no menu
-INSERT INTO NIVEL_USUARIO (ID_USUARIO, ID_NIVEL, DATA_HORA_NIVEL)
-VALUES (99, 5, SYSDATE);
-
--- Usuários
+-- Usuários Comuns
 INSERT INTO USUARIO VALUES (1, 'Ana Silva', 'ana1@email.com', '123456', 'BRONZE');
 INSERT INTO USUARIO VALUES (2, 'Bruno Costa', 'bruno2@email.com', '123456', 'PRATA');
 INSERT INTO USUARIO VALUES (3, 'Carla Souza', 'carla3@email.com', '123456', 'OURO');
-INSERT INTO USUARIO VALUES (4, 'Daniel Rocha', 'daniel4@email.com', '123456', 'OURO');
+INSERT INTO USUARIO VALUES (4, 'Daniel Rocha', 'daniel@email.com', '123456', 'OURO');
 INSERT INTO USUARIO VALUES (5, 'Elaine Melo', 'elaine5@email.com', '123456', 'PRATA');
 INSERT INTO USUARIO VALUES (6, 'Fernando Lima', 'fernando6@email.com', '123456', 'BRONZE');
 INSERT INTO USUARIO VALUES (7, 'Gabriela Pires', 'gabi7@email.com', '123456', 'OURO');
@@ -148,76 +145,75 @@ INSERT INTO USUARIO VALUES (13, 'Mariana Souza', 'mari13@email.com', '123456', '
 INSERT INTO USUARIO VALUES (14, 'Nicolas Antunes', 'nico14@email.com', '123456', 'PRATA');
 INSERT INTO USUARIO VALUES (15, 'Olivia Martins', 'oli15@email.com', '123456', 'BRONZE');
 
+-- PROFESSORES (ESPECIALISTAS EM SOFT SKILLS)
+INSERT INTO PROFESSOR VALUES (1, 'Prof. André', 'Comunicação', 'andre@prof.com', '123345');
+INSERT INTO PROFESSOR VALUES (2, 'Prof. Beatriz', 'Liderança', 'bia@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (3, 'Prof. Carlos', 'Inteligência Emocional', 'carlos@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (4, 'Prof. Diana', 'Trabalho em Equipe', 'diana@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (5, 'Prof. Eduardo', 'Resolução de Conflitos', 'edu@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (6, 'Prof. Fernanda', 'Gestão de Tempo', 'fer@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (7, 'Prof. Gustavo', 'Criatividade', 'gus@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (8, 'Prof. Helena', 'Negociação', 'helena@prof.com', '123');
+INSERT INTO PROFESSOR VALUES (9, 'Prof. Igor', 'Adaptabilidade', 'igor@prof.com', '123');
+INSERT INTO PROFESSOR VALUES (10, 'Prof. Julia', 'Ética', 'julia@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (11, 'Prof. Kleber', 'Pensamento Crítico', 'kleber@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (12, 'Prof. Larissa', 'Empatia', 'larissa@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (13, 'Prof. Marcelo', 'Oratória', 'marcelo@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (14, 'Prof. Nathalia', 'Resiliência', 'nathalia@prof.com', '123456');
+INSERT INTO PROFESSOR VALUES (15, 'Prof. Otávio', 'Feedback', 'otavio@prof.com', '123456');
 
--- Professores (CORRIGIDO O TYPO NO ID 8)
-INSERT INTO PROFESSOR VALUES (1, 'Prof. André', 'Java', 'andre@prof.com', '123345');
-INSERT INTO PROFESSOR VALUES (2, 'Prof. Beatriz', 'Python', 'bia@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (3, 'Prof. Carlos', 'Banco de Dados', 'carlos@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (4, 'Prof. Diana', 'DevOps', 'diana@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (5, 'Prof. Eduardo', 'Redes', 'edu@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (6, 'Prof. Fernanda', 'Machine Learning', 'fer@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (7, 'Prof. Gustavo', 'JavaScript', 'gus@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (8, 'Prof. Helena', 'Cloud', 'helena@prof.com', '123'); -- Corrigido aqui
-INSERT INTO PROFESSOR VALUES (9, 'Prof. Igor', 'C#', 'igor@prof.com', '123');
-INSERT INTO PROFESSOR VALUES (10, 'Prof. Julia', 'Cibersegurança', 'julia@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (11, 'Prof. Kleber', 'IA', 'kleber@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (12, 'Prof. Larissa', 'Frontend', 'larissa@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (13, 'Prof. Marcelo', 'Backend', 'marcelo@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (14, 'Prof. Nathalia', 'AWS', 'nathalia@prof.com', '123456');
-INSERT INTO PROFESSOR VALUES (15, 'Prof. Otávio', 'Oracle', 'otavio@prof.com', '123456');
+-- CURSOS (SOFT SKILLS)
+INSERT INTO CURSO VALUES (1, 1, 'Comunicação Assertiva', 'Fale com clareza e confiança');
+INSERT INTO CURSO VALUES (2, 2, 'Liderança Servidora', 'Como inspirar times');
+INSERT INTO CURSO VALUES (3, 3, 'Controle Emocional', 'Gerindo sentimentos no trabalho');
+INSERT INTO CURSO VALUES (4, 4, 'Colaboração Efetiva', 'Trabalhando melhor em grupo');
+INSERT INTO CURSO VALUES (5, 5, 'Mediação de Conflitos', 'Transformando brigas em soluções');
+INSERT INTO CURSO VALUES (6, 6, 'Produtividade Máxima', 'Faça mais em menos tempo');
+INSERT INTO CURSO VALUES (7, 7, 'Thinking Outside the Box', 'Inovação na prática');
+INSERT INTO CURSO VALUES (8, 8, 'Arte da Negociação', 'Ganhando o sim');
+INSERT INTO CURSO VALUES (9, 9, 'Gestão de Mudanças', 'Como se adaptar rápido');
+INSERT INTO CURSO VALUES (10, 10, 'Ética Corporativa', 'Valores no ambiente de trabalho');
+INSERT INTO CURSO VALUES (11, 11, 'Tomada de Decisão', 'Análise lógica de problemas');
+INSERT INTO CURSO VALUES (12, 12, 'Escuta Ativa', 'Entendendo o outro verdadeiramente');
+INSERT INTO CURSO VALUES (13, 13, 'Falar em Público', 'Perca o medo do palco');
+INSERT INTO CURSO VALUES (14, 14, 'Gestão de Estresse', 'Mantendo a calma sob pressão');
+INSERT INTO CURSO VALUES (15, 15, 'Cultura de Feedback', 'Como dar e receber críticas');
 
--- Cursos
-INSERT INTO CURSO VALUES (1,1,'Java Básico','Introdução ao Java');
-INSERT INTO CURSO VALUES (2,2,'Python Básico','Primeiros passos com Python');
-INSERT INTO CURSO VALUES (3,3,'Modelagem BD','Entidades e Relacionamentos');
-INSERT INTO CURSO VALUES (4,4,'DevOps','Integração e Deploy contínuo');
-INSERT INTO CURSO VALUES (5,5,'Redes 1','Fundamentos de redes');
-INSERT INTO CURSO VALUES (6,6,'Machine Learning Intro','Conceitos iniciais de ML');
-INSERT INTO CURSO VALUES (7,7,'JavaScript Moderno','ES6+');
-INSERT INTO CURSO VALUES (8,8,'Cloud Básico', 'Princípios de cloud');
-INSERT INTO CURSO VALUES (9,9,'C# básico','Introdução ao C#');
-INSERT INTO CURSO VALUES (10,10,'Cyber Segurança','Fundamentos de segurança');
-INSERT INTO CURSO VALUES (11,11,'IA Aplicada','IA no mundo real');
-INSERT INTO CURSO VALUES (12,12,'Frontend','HTML, CSS, JS');
-INSERT INTO CURSO VALUES (13,13,'Backend','APIs e serviços');
-INSERT INTO CURSO VALUES (14,14,'AWS','Arquiteturas AWS');
-INSERT INTO CURSO VALUES (15,15,'Oracle SQL','Consultas SQL');
+-- CHALLENGES (TAREFAS COMPORTAMENTAIS)
+INSERT INTO CHALLENGE VALUES (1, 99, 1, 'Desafio do Espelho', 'Treine seu discurso no espelho por 2 min.');
+INSERT INTO CHALLENGE VALUES (2, 99, 2, 'Delegar Tarefa', 'Identifique uma tarefa para delegar hoje.');
+INSERT INTO CHALLENGE VALUES (3, 99, 3, 'Diário de Emoções', 'Anote 3 momentos que te irritaram hoje.');
+INSERT INTO CHALLENGE VALUES (4, 99, 4, 'Elogio Sincero', 'Elogie o trabalho de um colega.');
+INSERT INTO CHALLENGE VALUES (5, 99, 5, 'Ouvinte Atento', 'Escute alguém por 5 min sem interromper.');
+INSERT INTO CHALLENGE VALUES (6, 99, 6, 'Técnica Pomodoro', 'Foque 25 min sem celular.');
+INSERT INTO CHALLENGE VALUES (7, 99, 7, 'Ideia Maluca', 'Escreva 5 usos novos para um clipe de papel.');
+INSERT INTO CHALLENGE VALUES (8, 99, 8, 'Troca de Favor', 'Negocie uma troca de tarefas em casa.');
+INSERT INTO CHALLENGE VALUES (9, 99, 9, 'Nova Rota', 'Faça um caminho diferente para o trabalho.');
+INSERT INTO CHALLENGE VALUES (10, 99, 10, 'Dilema Ético', 'Analise um caso de ética nas notícias.');
+INSERT INTO CHALLENGE VALUES (11, 99, 11, '5 Porquês', 'Use a técnica dos 5 porquês num problema.');
+INSERT INTO CHALLENGE VALUES (12, 99, 12, 'Mapa da Empatia', 'Descreva o dia de alguém diferente de você.');
+INSERT INTO CHALLENGE VALUES (13, 99, 13, 'Gravar Vídeo', 'Grave um vídeo de 1 min se apresentando.');
+INSERT INTO CHALLENGE VALUES (14, 99, 14, 'Respiração Guiada', 'Faça 3 minutos de respiração profunda.');
+INSERT INTO CHALLENGE VALUES (15, 99, 15, 'Pedir Feedback', 'Pergunte a alguém um ponto de melhoria seu.');
 
--- Challenges
-INSERT INTO CHALLENGE VALUES (1,1,1,'Desafio Java 1','Criar um Hello World');
-INSERT INTO CHALLENGE VALUES (2,2,2,'Desafio Python 1','Criar calculadora');
-INSERT INTO CHALLENGE VALUES (3,3,3,'Desafio BD 1','Criar modelo relacional');
-INSERT INTO CHALLENGE VALUES (4,4,4,'Desafio DevOps 1','Criar pipeline simples');
-INSERT INTO CHALLENGE VALUES (5,5,5,'Desafio Redes 1','Configurar IP');
-INSERT INTO CHALLENGE VALUES (6,6,6,'Desafio ML 1','Criar regressão linear');
-INSERT INTO CHALLENGE VALUES (7,7,7,'Desafio JS 1','Manipular DOM');
-INSERT INTO CHALLENGE VALUES (8,8,8,'Desafio Cloud 1','Criar máquina virtual');
-INSERT INTO CHALLENGE VALUES (9,9,9,'Desafio C# 1','Criar API simples');
-INSERT INTO CHALLENGE VALUES (10,10,10,'Desafio Cyber 1','Identificar vulnerabilidade');
-INSERT INTO CHALLENGE VALUES (11,11,11,'Desafio IA 1','Criar modelo de classificação');
-INSERT INTO CHALLENGE VALUES (12,12,12,'Desafio Front 1','Criar landing page');
-INSERT INTO CHALLENGE VALUES (13,13,13,'Desafio Back 1','Criar CRUD completo');
-INSERT INTO CHALLENGE VALUES (14,14,14,'Desafio AWS 1','Criar bucket S3');
-INSERT INTO CHALLENGE VALUES (15,15,15,'Desafio Oracle 1','Criar tabela SQL');
+-- CONVERSAS (Exemplos)
+INSERT INTO CONVERSA VALUES ('C1',1, SYSDATE,'Dúvida sobre comunicação.');
+INSERT INTO CONVERSA VALUES ('C2',2, SYSDATE,'Como liderar melhor?');
+INSERT INTO CONVERSA VALUES ('C3',3, SYSDATE,'Estou muito ansioso.');
+INSERT INTO CONVERSA VALUES ('C4',4, SYSDATE,'Meu time não colabora.');
+INSERT INTO CONVERSA VALUES ('C5',5, SYSDATE,'Briguei com meu chefe.');
+INSERT INTO CONVERSA VALUES ('C6',6, SYSDATE,'Não tenho tempo pra nada.');
+INSERT INTO CONVERSA VALUES ('C7',7, SYSDATE,'Preciso ter ideias novas.');
+INSERT INTO CONVERSA VALUES ('C8',8, SYSDATE,'Quero pedir um aumento.');
+INSERT INTO CONVERSA VALUES ('C9',9, SYSDATE,'A empresa mudou tudo.');
+INSERT INTO CONVERSA VALUES ('C10',10, SYSDATE,'O que é certo fazer?');
+INSERT INTO CONVERSA VALUES ('C11',11, SYSDATE,'Não sei o que escolher.');
+INSERT INTO CONVERSA VALUES ('C12',12, SYSDATE,'Ninguém me escuta.');
+INSERT INTO CONVERSA VALUES ('C13',13, SYSDATE,'Tenho vergonha de falar.');
+INSERT INTO CONVERSA VALUES ('C14',14, SYSDATE,'Estou quase explodindo.');
+INSERT INTO CONVERSA VALUES ('C15',15, SYSDATE,'Como saber se fui bem?');
 
--- Conversas (Agora vai funcionar!)
-INSERT INTO CONVERSA VALUES ('C1',1, SYSDATE,'Conversa sobre desafios.');
-INSERT INTO CONVERSA VALUES ('C2',2, SYSDATE,'Início da conversa.');
-INSERT INTO CONVERSA VALUES ('C3',3, SYSDATE,'Dúvidas sobre curso.');
-INSERT INTO CONVERSA VALUES ('C4',4, SYSDATE,'Feedback do sistema.');
-INSERT INTO CONVERSA VALUES ('C5',5, SYSDATE,'Erro ao acessar.');
-INSERT INTO CONVERSA VALUES ('C6',6, SYSDATE,'Ajuda com ML.');
-INSERT INTO CONVERSA VALUES ('C7',7, SYSDATE,'Novo desafio.');
-INSERT INTO CONVERSA VALUES ('C8',8, SYSDATE,'Indicação de desafio.');
-INSERT INTO CONVERSA VALUES ('C9',9, SYSDATE,'Mensagem geral.');
-INSERT INTO CONVERSA VALUES ('C10',10, SYSDATE,'Olá!');
-INSERT INTO CONVERSA VALUES ('C11',11, SYSDATE,'Perguntas gerais.');
-INSERT INTO CONVERSA VALUES ('C12',12, SYSDATE,'Requisição.');
-INSERT INTO CONVERSA VALUES ('C13',13, SYSDATE,'Aviso importante.');
-INSERT INTO CONVERSA VALUES ('C14',14, SYSDATE,'Boa tarde!');
-INSERT INTO CONVERSA VALUES ('C15',15, SYSDATE,'Preciso de ajuda.');
-
--- Conversa Indica Challenge
+-- CONVERSA_INDICA_CHALLENGE
 INSERT INTO CONVERSA_INDICA_CHALLENGE VALUES (1,'C1',1);
 INSERT INTO CONVERSA_INDICA_CHALLENGE VALUES (2,'C2',2);
 INSERT INTO CONVERSA_INDICA_CHALLENGE VALUES (3,'C3',3);
@@ -234,7 +230,7 @@ INSERT INTO CONVERSA_INDICA_CHALLENGE VALUES (13,'C13', 13);
 INSERT INTO CONVERSA_INDICA_CHALLENGE VALUES (14,'C14',14);
 INSERT INTO CONVERSA_INDICA_CHALLENGE VALUES (15,'C15',15);
 
--- Niveis
+-- NIVEIS
 INSERT INTO NIVEL VALUES (1,'Iniciante','Começando agora');
 INSERT INTO NIVEL VALUES (2,'Aprendiz','Primeiros passos');
 INSERT INTO NIVEL VALUES (3,'Intermediário','Entendendo conceitos');
@@ -251,7 +247,10 @@ INSERT INTO NIVEL VALUES (13,'Elite','Nível elite');
 INSERT INTO NIVEL VALUES (14,'Supremo','Nível supremo');
 INSERT INTO NIVEL VALUES (15,'Lendário','Nível lendário');
 
--- Nivel Usuario
+-- NIVEL_USUARIO (Histórico Inicial)
+-- Admin começa como Especialista
+INSERT INTO NIVEL_USUARIO VALUES (99, 5, SYSDATE); 
+-- Usuários comuns
 INSERT INTO NIVEL_USUARIO VALUES (1,1,SYSDATE);
 INSERT INTO NIVEL_USUARIO VALUES (2,2,SYSDATE);
 INSERT INTO NIVEL_USUARIO VALUES (3,3,SYSDATE);
